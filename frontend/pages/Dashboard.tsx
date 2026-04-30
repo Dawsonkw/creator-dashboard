@@ -1,3 +1,4 @@
+import Card from "../components/Card";
 import StatCard from "../components/StatCard";
 
 export default function Dashboard() {
@@ -17,7 +18,7 @@ export default function Dashboard() {
             </div>
 
             {/* Lower section */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <Card>
                 <h3 className="text-lg font-medium mb-4">Recent Sessions</h3>
 
                 <div className="flex flex-col gap-3">
@@ -34,20 +35,23 @@ export default function Dashboard() {
                         <span>2h 30m</span>
                     </div>
                 </div>
-            </div>
+            </Card>
 
             {/* Live Status */}
-            <div className="bg-gray-900 p-4 rounded-xl border border-gray-800">
+            <Card>
                 <h3 className="text-lg font-medium mb-2">Live Status</h3>
                 <div className="flex flex-col gap-2 text-sm text-gray-300">
                     <span>Status: Offline</span>
                     <span>Last Streamed: 3 Days Ago</span>
                     <span>Viewers: --</span>
                 </div>
-            </div>
+            </Card>
+
+            {/* Charts */}
+            <Card>
+                <h3 className="mb-4"> Weekly Activity</h3>
+                {/* Chart content would go here */}
+            </Card>
         </div>
-
-        
-
     )
 }
