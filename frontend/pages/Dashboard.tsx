@@ -1,35 +1,12 @@
-import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import StatCard from "../components/StatCard";
+import { useSessions } from "../hooks/useSessions";
 
-type Session = {
-    id: number;
-    date: string;
-    title: string;
-    duration: string;
-}
 
 
 export default function Dashboard() {
-    const [sessions, setSessions] = useState<Session[]> ([]);
-    const [loading, setLoading] = useState(true);
+    const { sessions, loading } = useSessions();
 
-    useEffect(() => {
-        async function fetchSessions() {
-            try {
-                const res = await fetch("http://localhost:3000/api/sessions");
-                const data = await res.json();
-                setSessions(data);
-            }
-            catch (err) {
-                console.error("Failed to fetch sessions, Bruh, you fucked up", err);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        fetchSessions();
-    }, []);
 
     return (
         <div className="flex flex-col gap-6">
@@ -62,8 +39,10 @@ export default function Dashboard() {
                                         key={session.id}
                                         className="flex justify-between text-sm text-gray-300 hover:bg-gray-800 rounded px-2 py-1"
                                     >
-                                        <span>{session.title}</span>
-                                        <span>{session.date}</span>
+                                        <div className="flex flex-col">
+                                            <span>{session.title}</span>
+                                            <span className="text-xs text-gray-500">{session.date}</span>
+                                        </div>
                                         <span>{session.duration}</span>
                                     </div>
                                 ))}
