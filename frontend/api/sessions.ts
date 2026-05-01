@@ -4,7 +4,7 @@ export type Session = {
     id: number;
     date: string;
     title: string;
-    duration: string;
+    durationMinutes: number;
 }
 
 export function getSessions(): Promise<Session[]> {

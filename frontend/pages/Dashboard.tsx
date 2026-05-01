@@ -7,6 +7,22 @@ import { useSessions } from "../hooks/useSessions";
 export default function Dashboard() {
     const { sessions, loading } = useSessions();
 
+    const totalSessions = sessions.length;
+
+    const totalMinutes = sessions.reduce(
+        (acc, s) => acc + s.durationMinutes,
+        0
+    );
+    const totalHours = (totalMinutes / 60).toFixed(1);
+
+    const avgMinutes = sessions.length > 0 ? totalMinutes / sessions.length : 0;
+
+    const avgHours = (avgMinutes / 60).toFixed(1);
+
+    function formatDuration(minutes: number) {
+        return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
+    }
+
 
     return (
         <div className="flex flex-col gap-6">
@@ -18,9 +34,9 @@ export default function Dashboard() {
             
             {/* Stat Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <StatCard title="Total Hours" value="42h" />
-                <StatCard title="Sessions This Week" value="5" />
-                <StatCard title="Avg. Session Length" value="4.2h" />
+                <StatCard title="Total Hours" value={`${totalHours}h`} />
+                <StatCard title="Total Streams" value={totalSessions.toString()} />
+                <StatCard title="Avg. Session Length" value={`${avgHours}h`} />
             </div>
 
             {/* Lower section Left and Right Grid style */}
@@ -43,7 +59,7 @@ export default function Dashboard() {
                                             <span>{session.title}</span>
                                             <span className="text-xs text-gray-500">{session.date}</span>
                                         </div>
-                                        <span>{session.duration}</span>
+                                        <span>{formatDuration(session.durationMinutes)}</span>
                                     </div>
                                 ))}
                             </div>
