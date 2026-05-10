@@ -1,6 +1,6 @@
 import './App.css'
-import Layout from '../components/Layout';
-import Dashboard from '../pages/Dashboard';
+import Layout from './components/Layout';
+import Dashboard from './pages/Dashboard';
 
 
 
