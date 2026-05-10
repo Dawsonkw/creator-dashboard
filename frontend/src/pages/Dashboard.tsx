@@ -1,27 +1,14 @@
 import Card from "../components/Card";
 import StatCard from "../components/StatCard";
 import { useSessions } from "../hooks/useSessions";
+import { useStats } from "../hooks/useStats";
+import { formatDuration } from "../utils/formatters";
 
 
 
 export default function Dashboard() {
     const { sessions, loading } = useSessions();
-
-    const totalSessions = sessions.length;
-
-    const totalMinutes = sessions.reduce(
-        (acc, s) => acc + s.durationMinutes,
-        0
-    );
-    const totalHours = (totalMinutes / 60).toFixed(1);
-
-    const avgMinutes = sessions.length > 0 ? totalMinutes / sessions.length : 0;
-
-    const avgHours = (avgMinutes / 60).toFixed(1);
-
-    function formatDuration(minutes: number) {
-        return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
-    }
+    const { totalSessions, totalHours, avgHours} = useStats(sessions);
 
 
     return (
