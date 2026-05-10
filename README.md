@@ -12,10 +12,19 @@ fully live Twitch-integrated dashboard with persistence and deployment.
 - [x] Backend API with Express and service layer
 - [x] Environment variable setup
 - [ ] Twitch OAuth + real data integration
-- [ ] Database persistence (PostgreSQL + Prisma)
+- [ ] Database persistence
 - [ ] Charts and analytics
 - [ ] Deployment + DevOps layer
 
 ## Stack
+### Current
 - Frontend: React, TypeScript, Vite, TailwindCSS
 - Backend: Node.js, Express, TypeScript
+
+### Planned
+- Database: PostgreSQL + Prisma
+- Auth: Twitch OAuth
+- Charts: Recharts
+- Containerization: Docker
+- Hosting: Railway or Render (TBD)
+- CI/CD: GitHub Actions
