@@ -24,4 +24,16 @@ async function getAccessToken(): Promise<string> {
     return accessToken as string;
 }
 
-export { getAccessToken };
+async function getPastBroadcasts(userId: string) {
+    const token = await getAccessToken();
+    const response = await fetch(`https://api.twitch.tv/helix/videos?user_id=${userId}&type=archive&first=10`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Client-Id': CLIENT_ID
+        }
+    });
+    const data = await response.json();
+    return data.data; // Array of past broadcasts  
+}
+
+export { getAccessToken, getPastBroadcasts };

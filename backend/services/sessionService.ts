@@ -1,3 +1,6 @@
+import { get } from "node:http";
+import { getPastBroadcasts } from "./twitchService";
+
 export type Session = {
     id: string;
     date: string;
@@ -5,14 +8,27 @@ export type Session = {
     durationMinutes: number;
 }
 
-const sessions: Session[] = [
-    { id: "1", date: "April 10", title: "Just Chatting", durationMinutes: 195 },
-    { id: "2", date: "April 8", title: "Dwarf Fortress", durationMinutes: 340 },
-    { id: "3", date: "April 6", title: "League of Legends", durationMinutes: 150 },
-    { id: "4", date: "April 4", title: "Minecraft", durationMinutes: 250 },
-    { id: "5", date: "April 2", title: "Baldur's Gate 3", durationMinutes: 230 }
-];
+function parseDuration(duration: string): number {
+    const hours = duration.match(/(\d+)h/);
+    const minutes = duration.match(/(\d+)m/);
+    const seconds = duration.match(/(\d+)s/);
 
-export function getSessions() {
-    return sessions; 
+    const totalMinutes = 
+        (hours ? parseInt(hours[1]) * 60 : 0) +
+        (minutes ? parseInt(minutes[1]) : 0) +
+        (seconds ? Math.round(parseInt(seconds[1]) / 60) : 0);
+
+    return totalMinutes;
+}
+
+export async function getSessions(): Promise<Session[]> {
+    const broadcasts = await getPastBroadcasts(process.env.TWITCH_USER_ID as string);
+
+    return broadcasts.map((broadcast: any) => ({
+        id: broadcast.id,
+        date: new Date(broadcast.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric'}),
+        title: broadcast.title,
+        durationMinutes: parseDuration(broadcast.duration)
+    }));
+
 }
