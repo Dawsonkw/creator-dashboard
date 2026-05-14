@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import sessionsRouter from "./routes/sessions";
 
+
 dotenv.config();
 
 const app = express();
@@ -19,3 +20,6 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}, you are awesome Dawson.`);
 })
+
+
+
