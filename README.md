@@ -12,7 +12,7 @@ fully live Twitch-integrated dashboard with persistence and deployment.
 - [x] Backend API with Express and service layer
 - [x] Environment variable setup
 - [/] Twitch OAuth + real data integration
-- [ ] Database persistence
+- [x] Database persistence
 - [ ] Charts and analytics
 - [ ] Deployment + DevOps layer
 
