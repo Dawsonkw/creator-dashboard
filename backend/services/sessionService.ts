@@ -1,5 +1,5 @@
-import { get } from "node:http";
-import { getPastBroadcasts } from "./twitchService";
+import { getPastBroadcasts } from './twitchService';
+import prisma from './prismaClient';
 
 export type Session = {
     id: string;
@@ -18,17 +18,30 @@ function parseDuration(duration: string): number {
         (minutes ? parseInt(minutes[1]) : 0) +
         (seconds ? Math.round(parseInt(seconds[1]) / 60) : 0);
 
-    return totalMinutes;
-}
 
-export async function getSessions(): Promise<Session[]> {
-    const broadcasts = await getPastBroadcasts(process.env.TWITCH_USER_ID as string);
+    return totalMinutes;}
 
-    return broadcasts.map((broadcast: any) => ({
-        id: broadcast.id,
-        date: new Date(broadcast.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric'}),
-        title: broadcast.title,
-        durationMinutes: parseDuration(broadcast.duration)
-    }));
+    async function syncSessions(): Promise<void> {
+        const broadcasts = await getPastBroadcasts(process.env.TWITCH_USER_ID as string);
 
-}
+        for (const broadcast of broadcasts) {
+            await prisma.session.upsert({
+                where: { id: broadcast.id },
+                update: {
+                    title: broadcast.title,
+                    durationMinutes: parseDuration(broadcast.duration),
+                },
+                create: {
+                    id: broadcast.id,
+                    date: new Date(broadcast.created_at).toLocaleDateString( 'en-US', { month: 'long', day: 'numeric'}),
+                    title: broadcast.title,
+                    durationMinutes: parseDuration(broadcast.duration),
+                },
+            });
+        }
+    }
+
+    export async function getSessions(): Promise<Session[]> {
+        await syncSessions();
+        return prisma.session.findMany();
+    }
