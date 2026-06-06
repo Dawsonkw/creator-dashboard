@@ -25,6 +25,6 @@ fully live Twitch-integrated dashboard with persistence and deployment.
 - Database: PostgreSQL + Prisma
 - Auth: Twitch OAuth
 - Charts: Recharts
-- Containerization: Docker
-- Hosting: Railway or Render (TBD)
+- Containerization: Docker (If I can figure out this persisting bug in the docker desktop app)
+- Hosting: AWS
 - CI/CD: GitHub Actions
